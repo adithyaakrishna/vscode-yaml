@@ -43,9 +43,9 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` ==> if: steps.yarn-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.yarn-cache-dir.outputs.dir }}
-          key: ${{ matrix.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ matrix.os }}-node-
+            ${{ runner.os }}-yarn-
 
       # Run install dependencies
       - name: Install Dependencies # Checks yarn cache and use it for dependencies install
