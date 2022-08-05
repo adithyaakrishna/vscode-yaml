@@ -31,8 +31,25 @@ jobs:
         with:
           node-version: 14
 
+      # Get the yarn cache directory
+      - name: Get Yarn Cache Directory
+        id: yarn-cache-dir
+        run: |
+          echo "::set-output name=dir::$(yarn cache dir)"
+
+      # Check for yarn cache
+      - name: Check for Yarn Cache
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` ==> if: steps.yarn-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ matrix.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-node-
+
       # Run install dependencies
-      - name: Install dependencies
+      - name: Install Dependencies # Checks yarn cache and use it for dependencies install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn
 
       # Build extension
