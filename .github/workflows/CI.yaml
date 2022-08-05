@@ -58,13 +58,13 @@ jobs:
 
       # Run tests
       - name: Run Test
-        uses: GabrielBB/xvfb-action@v1.6
+        uses: GabrielBB/xvfb-action@v1.0
         with:
           run: yarn test
 
       # Run UI tests
       - name: Run UI Test
-        uses: GabrielBB/xvfb-action@v1.6
+        uses: GabrielBB/xvfb-action@v1.0
         with:
           run: yarn run ui-test
 
