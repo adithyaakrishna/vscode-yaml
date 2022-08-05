@@ -23,7 +23,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Set up Node
       - name: Use Node 14
@@ -31,8 +31,25 @@ jobs:
         with:
           node-version: 14
 
+      # Get the yarn cache directory
+      - name: Get Yarn Cache Directory
+        id: yarn-cache-dir
+        run: |
+          echo "::set-output name=dir::$(yarn cache dir)"
+
+      # Check for yarn cache
+      - name: Check for Yarn Cache
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` ==> if: steps.yarn-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.yarn-cache-dir.outputs.dir }}
+          key: ${{ matrix.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ matrix.os }}-node-
+
       # Run install dependencies
-      - name: Install dependencies
+      - name: Install Dependencies # Checks yarn cache and use it for dependencies install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn
 
       # Build extension
