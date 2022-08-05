@@ -5,10 +5,10 @@ name: CI
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  push
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,13 +41,13 @@ jobs:
 
       # Run tests
       - name: Run Test
-        uses: GabrielBB/xvfb-action@v1.0
+        uses: GabrielBB/xvfb-action@v1.6
         with:
           run: yarn test
 
       # Run UI tests
       - name: Run UI Test
-        uses: GabrielBB/xvfb-action@v1.0
+        uses: GabrielBB/xvfb-action@v1.6
         with:
           run: yarn run ui-test
 
